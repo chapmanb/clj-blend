@@ -21,7 +21,7 @@
 (defn- get-history-datasets
   "Retrieve history datasets, flattened into Clojure maps."
   [hist-client hist]
-  (->> (.showHistoryContentsRequest hist-client (.getId hist))
+  (->> (.showHistoryContents hist-client (.getId hist))
        (filter #(= (.getType %) "file"))
        (map (partial get-history-dataset hist-client hist))))
 
