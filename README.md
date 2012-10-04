@@ -2,8 +2,7 @@
 
 Clojure library for interacting with Galaxy, CloudMan, and BioCloudCentral. This
 builds on [blend4j][0] with lots of help from [blend][1]. Provides high level
-functionality on top of blend4j, with a focus on useful functionality utilizing
-the Galaxy API.
+functionality on top of blend4j, with a focus on smooth interaction with Galaxy.
 
 [0]: https://github.com/jmchilton/blend4j
 [1]: https://github.com/afgane/blend

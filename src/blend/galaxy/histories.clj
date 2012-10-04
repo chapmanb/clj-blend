@@ -46,12 +46,18 @@
          (get-history-datasets hist-client)
          (filter (partial is-ftype? ftype)))))
 
+(defn get-base-url [client]
+  (-> client
+      .getWebResource
+      .getURI
+      .toString
+      (string/split #"/api")
+      first))
+
 (defn download-dataset
   "Retrieve remote history dataset to a local file or directory"
   [client dataset path]
-  (let [api-url (-> client .getWebResource .getURI)
-        query (.getQuery api-url)
-        base-url (first (string/split (.toString api-url) #"/api"))
+  (let [base-url (get-base-url client)
         fname (if (fs/directory? path)
                 (str (file path (:name dataset)))
                 path)]
