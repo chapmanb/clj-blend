@@ -31,12 +31,18 @@
   (= (keyword ftype)
      (keyword (:data-type dataset))))
 
+(defn get-current-history
+  [client]
+  (-> client
+      .getHistoriesClient
+      .getHistories
+      first))
+
 (defn get-datasets-by-type
   "Retrieve datasets from the current active history by filetype."
   [client ftype]
   (let [hist-client (.getHistoriesClient client)]
-    (->> (.getHistories hist-client)
-         first
+    (->> (get-current-history client)
          (get-history-datasets hist-client)
          (filter (partial is-ftype? ftype)))))
 
