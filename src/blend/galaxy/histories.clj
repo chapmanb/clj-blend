@@ -32,6 +32,8 @@
      (keyword (:data-type dataset))))
 
 (defn get-current-history
+  "Retrieve current history for API user.
+   XXX Needs update when API handles current retrieval."
   [client]
   (-> client
       .getHistoriesClient
