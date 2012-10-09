@@ -7,7 +7,7 @@
 (defn- get-history-dataset
   "Retrieve a history dataset converted into a clojure map."
   [hist-client hist hist-contents]
-  (let [ds (.showDataset hist-client (.getId hist) (.getId hist-contents))]
+  (let [ds (.showDataset hist-client (:id hist) (.getId hist-contents))]
     {:id (.getId ds)
      :name (.getName ds)
      :data-type (.getDataType ds)
@@ -21,7 +21,7 @@
 (defn- get-history-datasets
   "Retrieve history datasets, flattened into Clojure maps."
   [hist-client hist]
-  (->> (.showHistoryContents hist-client (.getId hist))
+  (->> (.showHistoryContents hist-client (:id hist))
        (filter #(= (.getType %) "file"))
        (map (partial get-history-dataset hist-client hist))))
 
@@ -35,10 +35,14 @@
   "Retrieve current history for API user.
    XXX Needs update when API handles current retrieval."
   [client]
-  (-> client
-      .getHistoriesClient
-      .getHistories
-      first))
+  (letfn [(history-to-map [x]
+            {:id (.getId x)
+             :name (.getName x)})]
+    (-> client
+        .getHistoriesClient
+        .getHistories
+        first
+        history-to-map)))
 
 (defn get-datasets-by-type
   "Retrieve datasets from the current active history by filetype."
