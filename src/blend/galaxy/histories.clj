@@ -6,8 +6,8 @@
 
 (defn- get-history-dataset
   "Retrieve a history dataset converted into a clojure map."
-  [hist-client hist hist-contents]
-  (let [ds (.showDataset hist-client (:id hist) (.getId hist-contents))]
+  [hist-client hist ds-id]
+  (let [ds (.showDataset hist-client (:id hist) ds-id)]
     {:id (.getId ds)
      :name (.getName ds)
      :data-type (.getDataType ds)
@@ -23,7 +23,13 @@
   [hist-client hist]
   (->> (.showHistoryContents hist-client (:id hist))
        (filter #(= (.getType %) "file"))
-       (map (partial get-history-dataset hist-client hist))))
+       (map #(get-history-dataset hist-client hist (.getId %)))))
+
+(defn get-dataset-by-id
+  "Retrieve a history dataset from history and dataset identifier."
+  [client history-id ds-id]
+  (let [hist-client (.getHistoriesClient client)]
+    (get-history-dataset hist-client {:id history-id} ds-id)))
 
 (defn- is-ftype?
   "Check if a dataset is the given filetype, cleanly handling keywords"
@@ -46,9 +52,12 @@
 
 (defn get-datasets-by-type
   "Retrieve datasets from the current active history by filetype."
-  [client ftype]
-  (let [hist-client (.getHistoriesClient client)]
-    (->> (get-current-history client)
+  [client ftype & {:keys [history-id]}]
+  (let [hist-client (.getHistoriesClient client)
+        hist (if history-id
+               {:id history-id}
+               (get-current-history client))]
+    (->> hist
          (get-history-datasets hist-client)
          (filter (partial is-ftype? ftype)))))
 
