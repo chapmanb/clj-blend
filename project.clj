@@ -1,4 +1,4 @@
-(defproject clj-blend "0.1.0-SNAPSHOT"
+(defproject clj-blend "0.1.0"
   :description "Clojure library for interacting with Galaxy, CloudMan, and BioCloudCentral, built on blend4j"
   :url "http://github.com/chapmanb/clj-blend"
   :license {:name "MIT"
