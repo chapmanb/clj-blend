@@ -9,6 +9,7 @@
   [hist-client hist ds-id]
   (let [ds (.showDataset hist-client (:id hist) ds-id)]
     {:id (.getId ds)
+     :history-id (:id hist)
      :name (.getName ds)
      :data-type (.getDataType ds)
      :genome-build (.getGenomeBuild ds)
@@ -54,7 +55,7 @@
   "Retrieve datasets from the current active history by filetype."
   [client ftype & {:keys [history-id]}]
   (let [hist-client (.getHistoriesClient client)
-        hist (if history-id
+        hist (if (seq history-id)
                {:id history-id}
                (get-current-history client))]
     (->> hist
