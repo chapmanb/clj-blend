@@ -1,6 +1,6 @@
 (ns blend.galaxy.tools
   "Run Galaxy tools through the remote API"
-  (:import [com.github.jmchilton.blend4j.galaxy.beans ToolInputs])
+  (:import [com.github.jmchilton.blend4j.galaxy.beans ToolInputs History])
   (:require [clojure.string :as string]
             [blend.galaxy.histories :as histories]))
 
@@ -11,10 +11,12 @@
                                (assoc coll (string/replace (name k) "-" "_") v))
                              {} params)
         tool-client (.getToolsClient client)
-        upload-history (if (nil? history-id)
-                         (:id (histories/get-current-history client))
-                         history-id)]
-    (.create tool-client history-id
+        upload-history (doto (History.)
+                         (.setId 
+                          (if (nil? history-id)
+                            (:id (histories/get-current-history client))
+                            history-id)))]
+    (.create tool-client upload-history
              (ToolInputs. tool-id clean-params))))
 
 (defn upload-to-history
