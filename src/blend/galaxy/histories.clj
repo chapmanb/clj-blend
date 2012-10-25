@@ -39,16 +39,14 @@
      (keyword (:data-type dataset))))
 
 (defn get-current-history
-  "Retrieve current history for API user.
-   XXX Needs update when API handles current retrieval."
+  "Retrieve current history for API user."
   [client]
   (letfn [(history-to-map [x]
             {:id (.getId x)
              :name (.getName x)})]
     (-> client
         .getHistoriesClient
-        .getHistories
-        first
+        (.showHistory "most_recently_used")
         history-to-map)))
 
 (defn get-datasets-by-type
