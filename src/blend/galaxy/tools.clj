@@ -21,10 +21,10 @@
 
 (defn upload-to-history
   "Upload a file via URL to a Galaxy history, defaulting to the current."
-  [client file-url dbkey ftype & {:keys [history-id]}]
+  [client file-url dbkey ftype & {:keys [history-id display-name]}]
   (run-tool client "upload1"
             {:file-type (name ftype)
              :dbkey (name dbkey)
              "files_0|url_paste" file-url
-             "files_0|NAME" (last (string/split file-url #"/"))}
+             "files_0|NAME" (or display-name (last (string/split file-url #"/")))}
             :history-id history-id))
