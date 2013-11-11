@@ -5,5 +5,4 @@
             :url "http://www.opensource.org/licenses/mit-license.html"}
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [fs "1.3.2"]
-                 [com.github.jmchilton.blend4j/blend4j "0.1-SNAPSHOT"]]
-  :repositories {"msi-artifactory" {:url "http://artifactory.msi.umn.edu/libs-snapshot-local"}})
+                 [com.github.jmchilton.blend4j/blend4j "0.1-alpha-1"]])
