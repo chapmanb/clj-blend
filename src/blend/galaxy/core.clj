@@ -1,15 +1,24 @@
 (ns blend.galaxy.core
   "Top level Galaxy interaction"
-  (:import [com.github.jmchilton.blend4j.galaxy GalaxyInstanceFactory])
-  (:require [blend.galaxy.histories :as histories]
-            [blend.galaxy.tools :as tools]
+  (:require [org.httpkit.client :as http]
             [blend.galaxy.users :as users]))
+
+
+(defn authenticate
+  [server user]
+  @(http/get (str (:api-root server) "authenticate/baseauth")
+             :headers {"Authorization" (str "Basic " )}))
+
 
 (defn get-client
   [galaxy-url api-key]
-  (GalaxyInstanceFactory/get galaxy-url api-key))
+  {:url galaxy-url :api-key api-key})
+
+(users/get-current-user client)
 
 (def get-user-info users/get-user-info)
+
+(def user users/get-user)
 
 (defn list-histories
   [client]

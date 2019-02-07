@@ -1,6 +1,5 @@
 (ns blend.galaxy.tools
   "Run Galaxy tools through the remote API"
-  (:import [com.github.jmchilton.blend4j.galaxy.beans ToolInputs History])
   (:require [clojure.string :as string]
             [blend.galaxy.histories :as histories]))
 
