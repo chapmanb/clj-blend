@@ -1,7 +1,7 @@
 (ns user
   (:import java.util.Base64)
   (:require [reloaded.repl :refer [system init start stop go reset reset-all]]
-            [org.httpkit.client :as http]
+            [clj-http.client :as client]
             [clojure.data.json :as json]))
 
 (defn key-fn [key]
@@ -12,17 +12,17 @@
 
 (defn authenticate
   [server user]
-  (let [b64 (b64-encode-str (str (:email user) ":" (:password user)))])
+  (let [b64 (b64-encode-str (str (:email user) ":" (:password user)))]
   (json/read-str
-   (:body @(http/get (str (:api-root server) "authenticate/baseauth")
-                     {:headers {"Authorization" (str "Basic " b64)}}))
-   :key-fn key-fn))
+   (:body (client/get (str (:api-root server) "authenticate/baseauth")
+                      {:headers {"Authorization" (str "Basic " b64)}}))
+   :key-fn key-fn)))
 
 (defn get-current-user
   [client]
   (json/read-str
-   (:body @(http/get (str (client :url) "users/current")
-              {:headers {"x-api-key" (client :api-key)}}))
+   (:body (client/get (str (client :url) "users/current")
+                      {:headers {"x-api-key" (client :api-key)}}))
    :key-fn key-fn))
 
 (comment
@@ -36,8 +36,10 @@
   (def api-key (:api-key (authenticate server user)))
 
   (def client {:url (:api-root server) :api-key api-key})
-  
-  (get-current-user client)
+
+  (try
+    (get-current-user client)
+    (catch Exception e (:cause (Throwable->map e))))
 
   )
     

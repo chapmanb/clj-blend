@@ -1,13 +1,14 @@
 (ns blend.galaxy.core
   "Top level Galaxy interaction"
-  (:require [org.httpkit.client :as http]
+  (:require [clj-http.client :as client]
+            [org.httpkit.client :as http]
             [blend.galaxy.users :as users]))
 
 
 (defn authenticate
   [server user]
-  @(http/get (str (:api-root server) "authenticate/baseauth")
-             :headers {"Authorization" (str "Basic " )}))
+  (client/get (str (:api-root server) "authenticate/baseauth")
+              :headers {"Authorization" (str "Basic " )}))
 
 
 (defn get-client
