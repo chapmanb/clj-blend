@@ -15,8 +15,6 @@
   [galaxy-url api-key]
   {:url galaxy-url :api-key api-key})
 
-(users/get-current-user client)
-
 (def get-user-info users/get-user-info)
 
 (def user users/get-user)
@@ -31,3 +29,6 @@
 (def download-dataset histories/download-dataset)
 (def upload-to-history tools/upload-to-history)
 
+(comment
+  (def galaxy-client (get-client "http://localhost:49999" "admin"))
+  )
