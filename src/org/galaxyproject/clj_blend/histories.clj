@@ -2,6 +2,9 @@
   "Retrieve Galaxy history information."
   (:use [clojure.java.io])
   (:require [clojure.string :as string]
+            [clj-http.client :as client]
+            [clojure.data.json :as json]
+            [org.galaxyproject.clj-blend.util :as util]
             [fs.core :as fs]))
 
 (defn- get-history-dataset
@@ -56,6 +59,13 @@
   "Retrieve current history for API user."
   [client]
   (get-history-most-recently-used client))
+
+(defn get-history-contents
+  [client history-id]
+  (json/read-str
+   (:body (client/get (str (client :url) "histories/" history-id "/contents")
+                      {:headers {"x-api-key" (client :api-key)}}))
+   :key-fn util/key-fn))
 
 (defn get-datasets-by-type
   "Retrieve datasets from the current active history by filetype."
