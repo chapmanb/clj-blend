@@ -1,4 +1,4 @@
-(ns blend.galaxy.histories
+(ns org.galaxyproject.clj-blend.histories
   "Retrieve Galaxy history information."
   (:use [clojure.java.io])
   (:require [clojure.string :as string]
