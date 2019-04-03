@@ -38,16 +38,24 @@
   (= (keyword ftype)
      (keyword (:data-type dataset))))
 
+(defn get-histories
+  [client]
+  (json/read-str
+   (:body (client/get (str (client :url) "histories")
+                      {:headers {"x-api-key" (client :api-key)}}))
+   :key-fn util/key-fn))
+
+(defn get-history-most-recently-used
+  [client]
+  (json/read-str
+   (:body (client/get (str (client :url) "histories/most_recently_used")
+                      {:headers {"x-api-key" (client :api-key)}}))
+   :key-fn util/key-fn))
+
 (defn get-current-history
   "Retrieve current history for API user."
   [client]
-  (letfn [(history-to-map [x]
-            {:id (.getId x)
-             :name (.getName x)})]
-    (-> client
-        .getHistoriesClient
-        (.showHistory "most_recently_used")
-        history-to-map)))
+  (get-history-most-recently-used client))
 
 (defn get-datasets-by-type
   "Retrieve datasets from the current active history by filetype."

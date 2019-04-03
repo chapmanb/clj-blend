@@ -1,7 +1,7 @@
-(ns blend.galaxy.tools
+(ns org.galaxyproject.clj-blend.tools
   "Run Galaxy tools through the remote API"
   (:require [clojure.string :as string]
-            [blend.galaxy.histories :as histories]))
+            [org.galaxyproject.clj-blend.histories :as histories]))
 
 (defn run-tool
   "Run a remote tool on Galaxy server"

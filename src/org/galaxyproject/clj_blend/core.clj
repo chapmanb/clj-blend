@@ -1,8 +1,7 @@
-(ns blend.galaxy.core
+(ns org.galaxyproject.clj-blend.core
   "Top level Galaxy interaction"
   (:require [clj-http.client :as client]
-            [org.httpkit.client :as http]
-            [blend.galaxy.users :as users]))
+            [org.galaxyproject.clj-blend.users :as users]))
 
 
 (defn authenticate

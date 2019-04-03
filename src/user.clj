@@ -2,32 +2,50 @@
   (:import java.util.Base64)
   (:require [reloaded.repl :refer [system init start stop go reset reset-all]]
             [clj-http.client :as client]
-            [clojure.data.json :as json]))
-
-(defn key-fn [key]
-  (keyword (clojure.string/replace key "_" "-")))
-
-(defn b64-encode-str [to-encode]
-  (.encodeToString (Base64/getEncoder) (.getBytes to-encode)))
+            [clojure.data.json :as json]
+            [org.galaxyproject.clj-blend.util :as util]))
 
 (defn authenticate
   [server user]
-  (let [b64 (b64-encode-str (str (:email user) ":" (:password user)))]
+  (let [b64 (util/b64-encode-str (str (:email user) ":" (:password user)))]
   (json/read-str
    (:body (client/get (str (:api-root server) "authenticate/baseauth")
                       {:headers {"Authorization" (str "Basic " b64)}}))
-   :key-fn key-fn)))
+   :key-fn util/key-fn)))
 
 (defn get-current-user
   [client]
   (json/read-str
    (:body (client/get (str (client :url) "users/current")
                       {:headers {"x-api-key" (client :api-key)}}))
-   :key-fn key-fn))
+   :key-fn util/key-fn))
+
+(defn get-users
+  [client]
+  (json/read-str
+   (:body (client/get (str (client :url) "users")
+                      {:headers {"x-api-key" (client :api-key)}}))
+   :key-fn util/key-fn))
+
+(defn get-histories
+  [client]
+  (json/read-str
+   (:body (client/get (str (client :url) "histories")
+                      {:headers {"x-api-key" (client :api-key)}}))
+   :key-fn util/key-fn))
+
+(defn get-history-most-recently-used
+  [client]
+  (json/read-str
+   (:body (client/get (str (client :url) "histories/most_recently_used")
+                      {:headers {"x-api-key" (client :api-key)}}))
+   :key-fn util/key-fn))
+
+              
 
 (comment
   
-  (b64-encode-str "admin@galaxy.org:admin")
+  (util/b64-encode-str "admin@galaxy.org:admin")
   
   (def server {:api-root "http://localhost:49999/api/"})
   
@@ -39,6 +57,18 @@
 
   (try
     (get-current-user client)
+    (catch Exception e (:cause (Throwable->map e))))
+
+  (try
+    (get-users client)
+    (catch Exception e (:cause (Throwable->map e))))
+
+  (try
+    (get-histories client)
+    (catch Exception e (:cause (Throwable->map e))))
+  
+  (try
+    (get-history-most-recently-used client)
     (catch Exception e (:cause (Throwable->map e))))
 
   )
