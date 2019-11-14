@@ -19,9 +19,9 @@
    :key-fn util/key-fn))
 
 (defn get-user-by-id
-  [client id]
+  [client user-id]
   (json/read-str
-   (:body (client/get (str (client :url) "users/" id)
+   (:body (client/get (str (client :url) "users/" user-id)
               {:headers {"x-api-key" (client :api-key)}}))
    :key-fn util/key-fn))
 
