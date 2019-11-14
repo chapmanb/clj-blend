@@ -13,14 +13,14 @@
   
   (def server {:api-root "http://localhost:8080/api/"})
   
-  (def user {:email "admin@galaxy.org" :password "admin"})
+  (def admin-user {:email "admin@galaxy.org" :password "admin"})
   
-  (def api-key (:api-key (auth/authenticate server user)))
+  (def api-key (:api-key (auth/authenticate server admin-user)))
 
   (def client {:url (:api-root server) :api-key api-key})
 
-  (def newuser0 {:username "newuser0" :email "newuser0@example.org" :password "helloworld0"})
-  (def newuser1 {:username "newuser0" :email "newuser1@example.org" :password "helloworld1"})
+  (def new-user-0 {:username "newuser0" :email "newuser0@example.org" :password "helloworld0"})
+  (def new-user-1 {:username "newuser0" :email "newuser1@example.org" :password "helloworld1"})
   (def user-to-delete {:username "deleteme" :email "deleteme@example.org" :password "deleteme"})
 
   (try
@@ -36,11 +36,11 @@
     (catch Exception e (:cause (Throwable->map e))))
 
   (try
-    (users/create-user client newuser0)
+    (users/create-user client new-user-0)
     (catch Exception e (:cause (Throwable->map e))))
 
   (try
-    (users/create-user client newuser1)
+    (users/create-user client new-user-1)
     (catch Exception e (:cause (Throwable->map e))))
 
   (try
@@ -54,6 +54,18 @@
   
   (try
     (histories/get-histories client)
+    (catch Exception e (:cause (Throwable->map e))))
+
+  (try
+    (histories/get-history-by-id client (:id (first (histories/get-histories client))))
+    (catch Exception e (:cause (Throwable->map e))))
+
+  (try
+    (histories/get-history-status client (:id (first (histories/get-histories client))))
+    (catch Exception e (:cause (Throwable->map e))))
+
+  (try
+    (histories/delete-history client (:id (histories/create-history client {:name "New History"})))
     (catch Exception e (:cause (Throwable->map e))))
   
   (try
