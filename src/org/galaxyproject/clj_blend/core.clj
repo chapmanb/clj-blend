@@ -18,17 +18,16 @@
 
 (def get-user-info users/get-current-user)
 
-(def user users/get-current-user)
-
 (defn list-histories
   [client]
-  [(histories/get-current-history client)])
+  [(histories/get-history-most-recently-used client)])
 
-(def get-datasets-by-type histories/get-datasets-by-type)
-(def get-dataset-by-id histories/get-dataset-by-id)
+(def get-history-contents-by-type histories/get-history-contents-by-type)
+(def get-history-contents-by-id histories/get-history-contents-by-id)
 
-(def download-dataset histories/download-dataset)
+(def download-history-contents histories/download-history-contents)
 (def upload-to-history tools/upload-to-history)
 
 (comment
-  (def galaxy-client (get-client "http://localhost:8080" "admin"))  )
+  (def client (get-client "http://localhost:8080" "admin"))
+  )

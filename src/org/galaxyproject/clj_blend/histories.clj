@@ -70,11 +70,17 @@
   (= (keyword ftype)
      (keyword (:data-type dataset))))
 
-
 (defn get-history-contents
   [client history-id]
   (json/read-str
    (:body (client/get (str (client :url) "histories/" history-id "/contents")
+                      {:headers {"x-api-key" (client :api-key)}}))
+   :key-fn util/key-fn))
+
+(defn get-history-contents-by-id
+  [client history-id content-id]
+  (json/read-str
+   (:body (client/get (str (client :url) "histories/" history-id "/contents/" content-id)
                       {:headers {"x-api-key" (client :api-key)}}))
    :key-fn util/key-fn))
 
@@ -84,3 +90,8 @@
   (filter (partial is-ftype? ftype)
           (get-history-contents client history-id)))
 
+(defn download-history-contents
+  [client history-id content-id download-path]
+  (spit download-path
+        (:body (client/get (str (client :url) "histories/" history-id "/contents/" content-id "/display")
+                           {:headers {"x-api-key" (client :api-key)}}))))

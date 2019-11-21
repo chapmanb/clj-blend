@@ -7,7 +7,7 @@
             [org.galaxyproject.clj-blend.util :as util]))
 
 (defn list-tools
-  [client & tool-id]
+  [client]
   (json/read-str
    (:body (client/get (str (client :url) "tools")
               {:headers {"x-api-key" (client :api-key)}}))
