@@ -14,7 +14,7 @@
 
 (defn get-client
   [galaxy-url api-key]
-  {:url galaxy-url :api-key api-key})
+  {:url (str galaxy-url "/api/") :api-key api-key})
 
 (def get-user-info users/get-current-user)
 
