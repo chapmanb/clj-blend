@@ -5,9 +5,9 @@ language: clojure
 env:
   global:
     - "GALAXY_APIKEY=admin"
-    - "GALAXY_URL=http://localhost:8080"
+    - "GALAXY_URL=http://localhost:8080/api/"
   matrix:
-    - "GALAXY_VERSION=18.05"
+    - "GALAXY_VERSION=19.05"
 
 services:
   - docker
