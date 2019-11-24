@@ -1,8 +1,11 @@
-(defproject clj-blend "0.1.1-SNAPSHOT"
-  :description "Clojure library for interacting with Galaxy, CloudMan, and BioCloudCentral, built on blend4j"
+(defproject clj-blend "0.2.0-SNAPSHOT"
+  :description "Clojure library for interacting with the Galaxy Bioinformatics Workflow Platform"
   :url "http://github.com/chapmanb/clj-blend"
   :license {:name "MIT"
             :url "http://www.opensource.org/licenses/mit-license.html"}
-  :dependencies [[org.clojure/clojure "1.4.0"]
-                 [fs "1.3.2"]
-                 [com.github.jmchilton.blend4j/blend4j "0.1-alpha-1"]])
+  :dependencies [[org.clojure/clojure "1.10.0"]
+                 [clj-http "3.9.1"]
+                 [org.clojure/data.json "0.2.6"]
+                 [org.clojure/data.codec "0.1.1"]
+                 [fs "1.3.2"]]
+  :profiles {:dev {:dependencies [[reloaded.repl "0.2.4"]]}})
