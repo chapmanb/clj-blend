@@ -8,6 +8,10 @@ env:
     - "GALAXY_URL=http://localhost:8080/"
   matrix:
     - "GALAXY_VERSION=19.05"
+    - "GALAXY_VERSION=19.01"
+    - "GALAXY_VERSION=18.09"
+    - "GALAXY_VERSION=18.05"
+    - "GALAXY_VERSION=18.01"
 
 services:
   - docker
